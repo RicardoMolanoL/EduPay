@@ -365,3 +365,19 @@ function renderAll() {
  * INIT
  ************************************************/
 isLoggedIn() ? showApp() : showLogin();
+
+// =============================
+// REGISTRO DEL SERVICE WORKER
+// =============================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/edupay/service-worker.js')
+      .then(reg => {
+        console.log('Service Worker registrado correctamente:', reg.scope);
+      })
+      .catch(error => {
+        console.error('Error al registrar el Service Worker:', error);
+      });
+  });
+}
