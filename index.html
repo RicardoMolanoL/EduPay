@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>EduPay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 12px;
+      background: #f2f4f8;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    section {
+      margin-bottom: 32px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #1976d2;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+
+    button.secondary {
+      background: #777;
+    }
+
+    button:disabled {
+      background: #bbb;
+    }
+
+    ul {
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    hr {
+      margin: 24px 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ===== GRADOS ===== */
+
+    .grade-section {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .grade-title {
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .grade-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .grade-item {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 10px 6px;
+      cursor: pointer;
+      background: #f9f9f9;
+    }
+
+    .grade-item input {
+      display: none;
+    }
+
+    .grade-item span {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .grade-item input:checked + span {
+      color: white;
+    }
+
+    .grade-item input:checked + span,
+    .grade-item input:checked {
+      background: none;
+    }
+
+    .grade-item:has(input:checked) {
+      background: #1976d2;
+      border-color: #1976d2;
+      color: white;
+    }
+
+    /* Login */
+    .login-title {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginView" class="container">
+  <h1 class="login-title">🔐 EduPay</h1>
+  <p style="text-align:center">Ingrese la contraseña</p>
+
+  <input type="password" id="passwordInput" placeholder="Contraseña">
+  <button id="loginBtn">Ingresar</button>
+</div>
+
+<!-- APP -->
+<div id="appView" class="container hidden">
+
+  <h1>EduPay</h1>
+  <button id="logoutBtn" class="secondary">Cerrar sesión</button>
+
+  <hr>
+
+  <!-- AGREGAR ESTUDIANTE -->
+  <section>
+    <h2>Agregar estudiante</h2>
+
+    <input type="text" id="studentName" placeholder="Nombre del estudiante">
+
+    <div class="grade-section">
+      <div class="grade-title">Selecciona grado</div>
+
+      <div class="grade-grid">
+        <!-- Fila 1 -->
+        <label class="grade-item">
+          <input type="radio" name="grade" value="Pre escolar">
+          <span>Preescolar</span>
+        </label>
+
+        <label class="grade-item">
+          <input type="radio" name="grade" value="Primero">
+          <span>Primero</span>
+        </label>
+
+        <label class="grade-item">
+          <input type="radio" name="grade" value="Segundo">
+          <span>Segundo</span>
+        </label>
+
+        <!-- Fila 2 -->
+        <label class="grade-item">
+          <input type="radio" name="grade" value="Tercero">
+          <span>Tercero</span>
+        </label>
+
+        <label class="grade-item">
+          <input type="radio" name="grade" value="Cuarto">
+          <span>Cuarto</span>
+        </label>
+
+        <label class="grade-item">
+          <input type="radio" name="grade" value="Quinto">
+          <span>Quinto</span>
+        </label>
+      </div>
+    </div>
+
+    <button id="addStudentBtn">Agregar estudiante</button>
+
+    <h3>Estudiantes</h3>
+    <ul id="studentList"></ul>
+  </section>
+
+  <!-- REGISTRAR PAGO -->
+  <section>
+    <h2>Registrar pago</h2>
+
+    <select id="studentSelect">
+      <option value="">-- Seleccione estudiante --</option>
+    </select>
+
+    <input type="number" id="amount" placeholder="Monto">
+
+    <button id="addPaymentBtn" disabled>Registrar pago</button>
+
+    <h3>Pagos registrados</h3>
+    <ul id="paymentList"></ul>
+
+    <h3>Total general: $<span id="total">0</span></h3>
+
+    <button id="exportCsvBtn">Descargar CSV</button>
+  </section>
+
+  <!-- RESUMEN -->
+  <section>
+    <h2>📊 Resumen por estudiante</h2>
+    <ul id="studentSummary"></ul>
+
+    <div style="margin-top:20px;">
+      <canvas id="paymentChart"></canvas>
+    </div>
+  </section>
+
+    <!-- BACKUP -->
+  <section>
+    <h2>💾 Copia de seguridad</h2>
+    <button id="backupBtn">Crear copia de seguridad</button>
+    <br><br>
+    <input type="file" id="restoreFileInput" accept=".json" style="display:none">
+    <button id="restoreBtn" class="secondary">Restaurar copia</button>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</html>
