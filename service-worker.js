@@ -1,10 +1,11 @@
 const CACHE_NAME = 'edupay-cache-v1';
+
 const FILES_TO_CACHE = [
-  './',
-  './index.html',
-  './app.js',
-  './manifest.json',
-  './icon.png'
+  '/EduPay/',
+  '/EduPay/index.html',
+  '/EduPay/app.js',
+  '/EduPay/manifest.json',
+  '/EduPay/icon.png'
 ];
 
 self.addEventListener('install', event => {
@@ -32,3 +33,4 @@ self.addEventListener('fetch', event => {
     )
   );
 });
+

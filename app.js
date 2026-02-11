@@ -372,7 +372,7 @@ isLoggedIn() ? showApp() : showLogin();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register('/edupay/service-worker.js')
+      .register('/EduPay/service-worker.js')
       .then(reg => {
         console.log('Service Worker registrado correctamente:', reg.scope);
       })
